@@ -1,2 +1,3 @@
 #!/bin/sh
-echo "exec $@" 
+/bin/echo "exec $@"
+/usr/bin/env | /usr/bin/sort

@@ -1,2 +1,3 @@
 #!/bin/sh
-echo "install"
+/bin/echo "install"
+/usr/bin/env | /usr/bin/sort
