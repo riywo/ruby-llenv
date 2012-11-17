@@ -27,6 +27,7 @@ private
       ENV[k] = v
     end
     ENV["HOME"] = @llhome
+    ENV["SHELL"] = "/bin/bash"
   end
 
 end
