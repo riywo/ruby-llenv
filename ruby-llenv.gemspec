@@ -8,9 +8,9 @@ Gem::Specification.new do |gem|
   gem.version       = LLenv::VERSION
   gem.authors       = ["riywo"]
   gem.email         = ["riywo.jp@gmail.com"]
-  gem.description   = %q{TODO: Write a gem description}
-  gem.summary       = %q{TODO: Write a gem summary}
-  gem.homepage      = ""
+  gem.description   = %q{LL install and exec}
+  gem.summary       = %q{Using .llenv file of repository}
+  gem.homepage      = "https://github.com/riywo/ruby-llenv"
 
   gem.files         = `git ls-files`.split($/)
   gem.executables   = gem.files.grep(%r{^bin/}).map{ |f| File.basename(f) }
