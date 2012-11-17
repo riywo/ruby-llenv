@@ -1,14 +1,24 @@
 require "llenv"
-require "llenv/env"
+require "llenv/declare"
 require "thor"
 require "tapp"
 
 class LLenv::CLI < Thor
 
-  desc "debug", "Debug"
-  def debug
+  class_option :declare, :type => :string, :aliases => "-d", :desc => "Specify a user declare directory"
+
+  desc "install", "Install declared LL"
+  def install
     load_llenv_file!
-    @env.tapp
+    load_declare!
+    @declare.install
+  end
+
+  desc "exec", "Execute command with declared LL"
+  def exec
+    load_llenv_file!
+    load_declare!
+    @declare.execute
   end
 
   desc "version", "Display LLenv gem version"
@@ -29,7 +39,15 @@ private ######################################################################
     root = File.expand_path(Dir.pwd)
     default_env = File.join(root, ".llenv")
     error("#{default_env} does not exist.") unless File.exist?(default_env)
-    @env = LLenv::Env.new(default_env)
+    @llenv = File.read(default_env).split("\n")[0]
+  end
+
+  def load_declare!
+    declare_dirs = []
+    declare_dirs << File.join(options[:declare], @llenv) if options[:declare]
+    declare_dirs << File.expand_path("../../../declare/#{@llenv}", __FILE__)
+    dir = declare_dirs.detect { |d| Dir.exists?(d) } or error("Declare of '#{@llenv}' does not exist.")
+    @declare = LLenv::Declare.new(dir)
   end
 
 end
