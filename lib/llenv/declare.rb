@@ -4,18 +4,29 @@ class LLenv::Declare
   def initialize(dir, llhome)
     @install_sh = File.join(dir, "install.sh")
     @exec_sh    = File.join(dir, "exec.sh")
-    @llhome     = llhome.tapp
+    @llhome     = llhome
   end
 
   def install
-    ENV.clear
-    ENV["HOME"] = @llhome
+    set_env
     system(@install_sh)
   end
 
   def execute(argv)
-    ENV.clear
-    ENV["HOME"] = @llhome
+    set_env
     exec(@exec_sh, *argv)
   end
+
+private
+
+  def set_env
+    ENV.clear
+    env = `. /etc/profile && env`
+    env.split("\n").map do |e|
+      k, v = e.split("=")
+      ENV[k] = v
+    end
+    ENV["HOME"] = @llhome
+  end
+
 end
