@@ -4,27 +4,32 @@ require "thor"
 
 class LLenv::CLI < Thor
 
-  class_option :declare, :type => :string, :aliases => "-d", :desc => "Specify a user declare directory"
-  class_option :home,    :type => :string, :aliases => "-h", :desc => "Specify a home directory of LL (Default: ~/.llenv)"
+  def initialize(args = [], options = {}, config = {})
+    @root_dir     = ENV["LLENV_ROOT"] || File.expand_path("~/.llenv")
+    @declare_repo = ENV["LLENV_DECLARE_URL"] || "https://github.com/riywo/llenv-declare.git"
+    @declare      = LLenv::Declare.new(@root_dir)
+    super
+  end
+
+  desc "list", "List of declaring"
+  def list
+    check_root_dir!
+    @declare.list
+  end
 
   desc "install", "Install declared LL"
   def install
-    load_llenv_file!
-    check_homedir!
-    load_declare!
-    @declare.install
+    check_root_dir!
+    @declare.install(llenv)
   end
 
   desc "exec", "Execute command with declared LL"
   def exec(*argv)
-    load_llenv_file!
-    check_homedir!
-    load_declare!
-    @declare.execute(argv)
+    check_root_dir!
+    @declare.execute(llenv, argv)
   end
 
   desc "version", "Display LLenv gem version"
-
   map ["-v", "--version"] => :version
   def version
     puts LLenv::VERSION
@@ -37,27 +42,18 @@ private ######################################################################
     exit 1
   end
 
-  def load_llenv_file!
-    root = File.expand_path(Dir.pwd)
-    default_env = File.join(root, ".llenv")
-    error("#{default_env} does not exist.") unless File.exist?(default_env)
-    @llenv = File.read(default_env).split("\n")[0]
+  def llenv
+    pwd = File.expand_path(Dir.pwd)
+    llenv_file = File.join(pwd, ".llenv")
+    error("#{llenv_file} does not exist.") unless File.exist?(llenv_file)
+    llenv = File.read(llenv_file).split("\n")[0]
+    llenv
   end
 
-  def check_homedir!
-    home = options[:home] || File.expand_path("~/.llenv")
-    llhome = File.join(home, @llenv)
-    Dir.mkdir(home) unless File.directory?(home)
-    Dir.mkdir(llhome) unless File.directory?(llhome)
-    @llhome = llhome
-  end
-
-  def load_declare!
-    declare_dirs = []
-    declare_dirs << File.join(options[:declare], @llenv) if options[:declare]
-    declare_dirs << File.expand_path("../../../declare/#{@llenv}", __FILE__)
-    dir = declare_dirs.detect { |d| File.directory?(d) } or error("Declare of '#{@llenv}' does not exist.")
-    @declare = LLenv::Declare.new(dir, @llhome)
+  def check_root_dir!
+    unless File.directory?(@root_dir)
+      system("git clone #{@declare_repo} #{@root_dir} > /dev/null 2>&1") or error("git clone #{@declare_repo}")
+    end
   end
 
 end
