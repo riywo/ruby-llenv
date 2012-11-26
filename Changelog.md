@@ -1,3 +1,7 @@
+## 0.0.6 (2012-11-25)
+
+* add update task
+
 ## 0.0.5 (2012-11-25)
 
 * Change declare script name
