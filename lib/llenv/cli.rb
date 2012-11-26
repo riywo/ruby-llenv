@@ -47,8 +47,8 @@ private ######################################################################
   def check_homedir!
     home = options[:home] || File.expand_path("~/.llenv")
     llhome = File.join(home, @llenv)
-    Dir.mkdir(home) unless Dir.exists?(home)
-    Dir.mkdir(llhome) unless Dir.exists?(llhome)
+    Dir.mkdir(home) unless File.directory?(home)
+    Dir.mkdir(llhome) unless File.directory?(llhome)
     @llhome = llhome
   end
 
@@ -56,7 +56,7 @@ private ######################################################################
     declare_dirs = []
     declare_dirs << File.join(options[:declare], @llenv) if options[:declare]
     declare_dirs << File.expand_path("../../../declare/#{@llenv}", __FILE__)
-    dir = declare_dirs.detect { |d| Dir.exists?(d) } or error("Declare of '#{@llenv}' does not exist.")
+    dir = declare_dirs.detect { |d| File.directory?(d) } or error("Declare of '#{@llenv}' does not exist.")
     @declare = LLenv::Declare.new(dir, @llhome)
   end
 
