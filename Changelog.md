@@ -1,3 +1,7 @@
+## 0.0.5 (2012-11-25)
+
+* Change declare script name
+
 ## 0.0.4 (2012-11-25)
 
 * Refactoring
