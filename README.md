@@ -18,13 +18,13 @@ Or install it yourself as:
 
 ## Usage
 
-Install ruby-1.9.3-p327 to ~/.llenv/ruby-1.9.3-p327/, and also `bundle install` required modules to your-project/vendor/bundle. See [install.sh](https://github.com/riywo/llenv-declare/blob/master/ruby-1.9.3-p327/install.sh).
+Install ruby-1.9.3-p327 to ~/.llenv/ruby-1.9.3-p327/, and also `bundle install` required modules to your-project/vendor/bundle. See [install script](https://github.com/riywo/llenv-declare/blob/master/.lib/ruby/install).
 
     $ cd your-project
     $ echo ruby-1.9.3-p327 > .llenv
     $ llenv install
 
-Execute any command. See [exec.sh](https://github.com/riywo/llenv-declare/blob/master/ruby-1.9.3-p327/exec.sh).
+Execute any command. See [exec script](https://github.com/riywo/llenv-declare/blob/master/.lib/ruby/exec).
 
     $ cd your-project
     $ llenv exec ruby -v
