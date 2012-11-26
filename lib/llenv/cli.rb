@@ -11,19 +11,25 @@ class LLenv::CLI < Thor
     super
   end
 
-  desc "list", "List of declaring"
+  desc "list", "List of declared LLs"
   def list
     check_root_dir!
     @declare.list
   end
 
-  desc "install", "Install declared LL"
+  desc "update", "Update declared LLs"
+  def update
+    check_root_dir!
+    system("cd #{@root_dir}; git pull")
+  end
+
+  desc "install", "Install specific LLenv"
   def install
     check_root_dir!
     @declare.install(llenv)
   end
 
-  desc "exec", "Execute command with declared LL"
+  desc "exec", "Execute command with specific LLenv"
   def exec(*argv)
     check_root_dir!
     @declare.execute(llenv, argv)
