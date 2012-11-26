@@ -7,14 +7,14 @@ class LLenv::Declare
 
   def install(llenv)
     set_env(llenv)
-    install_sh = File.join(@declare_dir, "install.sh")
-    system(install_sh)
+    install_script = File.join(@declare_dir, "install")
+    system(install_script)
   end
 
   def execute(llenv, argv)
     set_env(llenv)
-    exec_sh = File.join(@declare_dir, "exec.sh")
-    exec(exec_sh, *argv)
+    exec_script = File.join(@declare_dir, "exec")
+    exec(exec_script, *argv)
   end
 
   def list
