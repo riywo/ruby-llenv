@@ -1,7 +1,6 @@
 require "llenv"
 require "llenv/declare"
 require "thor"
-require "tapp"
 
 class LLenv::CLI < Thor
 
