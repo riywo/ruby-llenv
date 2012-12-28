@@ -1,3 +1,8 @@
+## 0.0.7 (2012-12-28)
+
+* declare.run
+* need `llenv update`
+
 ## 0.0.6 (2012-11-25)
 
 * add update task
