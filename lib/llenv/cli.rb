@@ -26,13 +26,19 @@ class LLenv::CLI < Thor
   desc "install", "Install specific LLenv"
   def install
     check_root_dir!
-    @declare.install(llenv)
+    @declare.run(llenv, "install")
   end
 
   desc "exec", "Execute command with specific LLenv"
   def exec(*argv)
     check_root_dir!
-    @declare.execute(llenv, argv)
+    @declare.run(llenv, "exec", argv)
+  end
+
+  desc "vendorpath", "Return vendor module install path"
+  def vendorpath
+    check_root_dir!
+    @declare.run(llenv, "vendorpath")
   end
 
   desc "version", "Display LLenv gem version"

@@ -5,16 +5,11 @@ class LLenv::Declare
     @root_dir = dir
   end
 
-  def install(llenv)
+  def run(llenv, command, argv = [])
     set_env(llenv)
-    install_script = File.join(@declare_dir, "install")
-    system(install_script)
-  end
-
-  def execute(llenv, argv)
-    set_env(llenv)
-    exec_script = File.join(@declare_dir, "exec")
-    exec(exec_script, *argv)
+    script = File.join(@declare_dir, "run")
+    argv.unshift(command)
+    exec(script, *argv)
   end
 
   def list
