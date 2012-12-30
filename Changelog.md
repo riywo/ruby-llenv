@@ -1,3 +1,8 @@
+## 0.0.8 (2012-12-29)
+
+* LLENV_ENV
+* need `llenv update`
+
 ## 0.0.7 (2012-12-28)
 
 * declare.run
