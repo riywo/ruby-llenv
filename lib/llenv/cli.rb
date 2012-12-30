@@ -7,7 +7,8 @@ class LLenv::CLI < Thor
   def initialize(args = [], options = {}, config = {})
     @root_dir     = ENV["LLENV_ROOT"] || File.expand_path("~/.llenv")
     @declare_repo = ENV["LLENV_DECLARE_URL"] || "https://github.com/riywo/llenv-declare.git"
-    @declare      = LLenv::Declare.new(@root_dir)
+    @env          = ENV["LLENV_ENV"] || ""
+    @declare      = LLenv::Declare.new(@root_dir, @env)
     super
   end
 

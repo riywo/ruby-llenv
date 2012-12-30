@@ -1,8 +1,14 @@
 require "llenv"
 
 class LLenv::Declare
-  def initialize(dir)
+
+  def initialize(dir, env)
     @root_dir = dir
+    @env = {}
+    env.split(',').each do |str|
+      k, v = str.split('=')
+      @env[k] = v
+    end
   end
 
   def run(llenv, command, argv = [])
@@ -26,17 +32,23 @@ private
     @declare_dir = File.join(@root_dir, llenv)
     raise "#{llenv} not declared in #{@root_dir}" unless File.directory?(@declare_dir)
 
-    ENV.clear
-    env = `. /etc/profile && env`
-    env.split("\n").map do |e|
-      k, v = e.split("=")
-      ENV[k] = v
-    end
+    env = {}
+    env["LLENV_ROOT"] = ENV["LLENV_ROOT"] if ENV.has_key? "LLENV_ROOT"
+    env["LLENV_DECLARE_URL"] = ENV["LLENV_DECLARE_URL"] if ENV.has_key? "LLENV_DECLARE_URL"
+    env.merge!(@env)
 
+    ENV.clear
+    path = `. /etc/profile && echo $PATH`.chomp
     home = File.join(@declare_dir, ".home")
-    Dir.mkdir(home) unless File.directory?(home)
+    Dir.mkdir(home) unless File.exists?(home)
+
+    ENV["PATH"] = path
     ENV["HOME"] = home
     ENV["SHELL"] = "/bin/bash"
+
+    env.each do |k,v|
+      ENV[k] = v
+    end
   end
 
 end
