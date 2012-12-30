@@ -40,6 +40,15 @@ Root directory installed all LLs. Default: "~/.llenv"
 
 Declare repository URL. Default: [https://github.com/riywo/llenv-declare.git](https://github.com/riywo/llenv-declare.git)
 
+### `LLENV_ENV`
+
+For passing user environment variables to inside of llenv.
+
+    $ LLENV_ENV=PORT=1234,LOGDIR=/var/log/log llenv exec env
+    PORT=1234
+    LOGDIR=/var/log/log
+    ...
+
 ## Contributing
 
 1. Fork it
