@@ -6,7 +6,7 @@ class LLenv::Declare
     @root_dir = dir
     @env = {}
     env.split(',').each do |str|
-      k, v = str.split('=')
+      k, v = str.split(/=|\\=/)
       @env[k] = v
     end
   end
